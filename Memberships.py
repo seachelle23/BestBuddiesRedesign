@@ -3,24 +3,6 @@ from queue import PriorityQueue
 
 buddies = []
 peers = []
-def main():
-  makeArrays()
-  PeerPreferences(buddies, peers)
-  Matching(buddies, peers)
-    
-if __name__ == "__main__":
-    main()    
-
-def makeArrays():
-    with open('MatchingInfo.csv', 'rt', encoding="UTF-8", errors='ignore') as csvfile:
-        spamreader = csv.DictReader(csvfile)
-        for row in spamreader:
-            if row["Interested in a Match"] == "Yes":
-                if row["IDD?"] == "Yes":
-                    buddies.append(Buddy(row["First Name"], row["Last Name"], "Buddy", row["Matching Survey Interests"], [], row["Matching Survey Communication Types"], [], row["Matching Survey Days Available"], [], PriorityQueue()))
-                else:
-                    peers.append(Member(row["First Name"], row["Last Name"], "Peer", row["Matching Survey Interests"], [], row["Matching Survey Communication Types"], [], row["Matching Survey Days Available"], []))
-
 
 class Member:
 
@@ -205,6 +187,15 @@ class Buddy:
 
         self.peerPreferences = peerPreferences
 
+def makeArrays():
+    with open('MatchingInfo.csv', 'rt', encoding="UTF-8", errors='ignore') as csvfile:
+        spamreader = csv.DictReader(csvfile)
+        for row in spamreader:
+            if row["Interested in a Match"] == "Yes":
+                if row["IDD?"] == "Yes":
+                    buddies.append(Buddy(row["First Name"], row["Last Name"], "Buddy", row["Matching Survey Interests"], [], row["Matching Survey Communication Types"], [], row["Matching Survey Days Available"], [], PriorityQueue()))
+                else:
+                    peers.append(Member(row["First Name"], row["Last Name"], "Peer", row["Matching Survey Interests"], [], row["Matching Survey Communication Types"], [], row["Matching Survey Days Available"], []))
 
 
 def PeerPreferences(buddies, peers):
@@ -216,31 +207,38 @@ def PeerPreferences(buddies, peers):
                     commonalities+=1
             buddies[buddy].peerPreferences.put((commonalities, peers[peer]))
 
-
-
-while not buddies[0].peerPreferences.empty():
-    next_item = buddies[0].peerPreferences.get()
-    print(next_item)
-
-# PeerPreferences(buddies, peers)
-# for r in range(len(buddi es)+1):
-#     print(r)
-#     for c in range(len(peers)+1):
-#         print(c)
-#         print(preferences[r][c])
-
-
 def Matching(buddies, peers):
     AvailableBuddies = []
     for buddy in buddies:
         AvailableBuddies.append(buddy)
     for peer in peers:
         peer.available = True
-    while AvailableBuddies.length() > 0:
+    while len(AvailableBuddies) > 0:
         for buddy in buddies:
-            buddy.request = buddies[buddy].peerPreferences.get()
+            buddy.request = buddy.peerPreferences.get()
             if peer.available:
-                buddy.match = buddies[buddy].peerPreferences.get()
+                buddy.match = buddy.peerPreferences.get()
+
+def main():
+
+  makeArrays()
+  PeerPreferences(buddies, peers)
+  Matching(buddies, peers)
+  # PeerPreferences(buddies, peers)
+# for r in range(len(buddi es)+1):
+#     print(r)
+#     for c in range(len(peers)+1):
+#         print(c)
+#         print(preferences[r][c])
+
+  while not buddies[0].peerPreferences.empty():
+    next_item = buddies[0].peerPreferences.get()
+    print(next_item)
+    
+if __name__ == "__main__":
+    main()    
+
+
 
 # for b in buddies:
 #     print(b.firstName + " " + str(b.interests) + " " + str(b.commTypes) + " " + str(b.daysAvail))
