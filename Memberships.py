@@ -220,29 +220,18 @@ def Matching(buddies, peers):
                 buddy.match = buddy.peerPreferences.get()
 
 def main():
+    print("Hello world")
+    makeArrays()
+    PeerPreferences(buddies, peers)
+    Matching(buddies, peers)
+    for r in range(len(buddies)+1):
+        print(r)
+        for c in range(len(peers)+1):
+            print(c)
 
-  makeArrays()
-  PeerPreferences(buddies, peers)
-  Matching(buddies, peers)
-  # PeerPreferences(buddies, peers)
-# for r in range(len(buddi es)+1):
-#     print(r)
-#     for c in range(len(peers)+1):
-#         print(c)
-#         print(preferences[r][c])
-
-  while not buddies[0].peerPreferences.empty():
-    next_item = buddies[0].peerPreferences.get()
-    print(next_item)
-    
-if __name__ == "__main__":
-    main()    
+    while not buddies[0].peerPreferences.empty():
+        next_item = buddies[0].peerPreferences.get()
+        print(next_item)
 
 
-
-# for b in buddies:
-#     print(b.firstName + " " + str(b.interests) + " " + str(b.commTypes) + " " + str(b.daysAvail))
-
-# for b in peers:
-#     print(b.firstName + " " + str(b.interests) + " " + str(b.commTypes) + " " + str(b.daysAvail))
-
+main()
