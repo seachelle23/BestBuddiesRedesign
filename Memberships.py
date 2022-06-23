@@ -3,6 +3,24 @@ from queue import PriorityQueue
 
 buddies = []
 peers = []
+def main():
+  makeArrays()
+  PeerPreferences(buddies, peers)
+  Matching(buddies, peers)
+    
+if __name__ == "__main__":
+    main()    
+
+def makeArrays():
+    with open('MatchingInfo.csv', 'rt', encoding="UTF-8", errors='ignore') as csvfile:
+        spamreader = csv.DictReader(csvfile)
+        for row in spamreader:
+            if row["Interested in a Match"] == "Yes":
+                if row["IDD?"] == "Yes":
+                    buddies.append(Buddy(row["First Name"], row["Last Name"], "Buddy", row["Matching Survey Interests"], [], row["Matching Survey Communication Types"], [], row["Matching Survey Days Available"], [], PriorityQueue()))
+                else:
+                    peers.append(Member(row["First Name"], row["Last Name"], "Peer", row["Matching Survey Interests"], [], row["Matching Survey Communication Types"], [], row["Matching Survey Days Available"], []))
+
 
 class Member:
 
@@ -198,7 +216,7 @@ def PeerPreferences(buddies, peers):
                     commonalities+=1
             buddies[buddy].peerPreferences.put((commonalities, peers[peer]))
 
-PeerPreferences(buddies, peers)
+
 
 while not buddies[0].peerPreferences.empty():
     next_item = buddies[0].peerPreferences.get()
@@ -230,17 +248,3 @@ def Matching(buddies, peers):
 # for b in peers:
 #     print(b.firstName + " " + str(b.interests) + " " + str(b.commTypes) + " " + str(b.daysAvail))
 
-def main():
-  
-    with open('MatchingInfo.csv', 'rt', encoding="UTF-8", errors='ignore') as csvfile:
-        spamreader = csv.DictReader(csvfile)
-        for row in spamreader:
-            if row["Interested in a Match"] == "Yes":
-                if row["IDD?"] == "Yes":
-                    buddies.append(Buddy(row["First Name"], row["Last Name"], "Buddy", row["Matching Survey Interests"], [], row["Matching Survey Communication Types"], [], row["Matching Survey Days Available"], [], PriorityQueue()))
-                else:
-                    peers.append(Member(row["First Name"], row["Last Name"], "Peer", row["Matching Survey Interests"], [], row["Matching Survey Communication Types"], [], row["Matching Survey Days Available"], []))
-
-
-if __name__ == "__main__":
-    main()    
